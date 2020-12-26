@@ -1,3 +1,7 @@
 .wrapper {
   position: absolute;
+
+  &.focused {
+    border: 2px solid black;
+  }
 }

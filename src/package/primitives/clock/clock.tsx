@@ -4,9 +4,7 @@ import { BasePrimitive, PrimitiveProps } from '../base';
 
 import './Clock.scss';
 
-interface ClockProps extends PrimitiveProps {
-
-}
+interface ClockProps extends PrimitiveProps {}
 
 export class Clock extends React.Component<ClockProps, any> {
   componentDidMount() {}

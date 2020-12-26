@@ -26,7 +26,7 @@ export class App extends React.Component<any, AppState> {
       const primitive = this.factory.resolve(random(0, container?.clientWidth), random(0, container?.clientHeight));
 
       this.setState((state: AppState) => ({
-        instances: [...state.instances, ...[primitive]]
+        instances: [...state.instances, primitive]
       }));
     });
   }
