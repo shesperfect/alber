@@ -2,6 +2,31 @@
   position: absolute;
 
   &.focused {
-    border: 2px solid black;
+    opacity: .8;
+  }
+}
+
+.buttons {
+  position: absolute;
+  top: 0;
+  right: -2px;
+
+  .btn {
+    margin-bottom: 5px;
+    background: white;
+    border: 2px solid #333;
+    border-radius: 5px;
+    display: block;
+    box-shadow: 0 0 0 3px white;
+    font-size: 10px;
+    text-transform: lowercase;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      border-color: rgba(51, 51, 51, .8);
+    }
   }
 }

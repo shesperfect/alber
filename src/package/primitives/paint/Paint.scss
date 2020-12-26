@@ -1,6 +1,8 @@
 .paint-wrapper {
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
-  background: green;
+  position: relative;
+  width: 0;
+  height: 0;
+  border-left: 80px solid transparent;
+  border-right: 80px solid transparent;
+  border-bottom: 160px solid transparent;
 }

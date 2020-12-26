@@ -25,20 +25,28 @@ export class BasePrimitive extends React.Component<PrimitiveProps, PrimitiveStat
     };
   }
 
-  componentDidMount() {
-    document.addEventListener('click', e => {
-      console.log(e);
-    });
+  focus() {
+    this.setState(() => ({ focused: true }));
   }
+
+  blur() {
+    this.setState(() => ({ focused: false }));
+  }
+
+  remove() {}
 
   render() {
     const { top, left } = this.props;
 
     return (
-      <div className={ `wrapper ${ this.state.focused ? 'focused' : '' }` } style={{ top, left }}>
+      <div
+        className={ `wrapper ${ this.state.focused ? 'focused' : '' }` }
+        style={{ top, left: `${left}%` }}>
         { this.props.children }
-        <button className="remove-btn">Remove</button>
-        <button className="focus-btn">Focus</button>
+        <div className="buttons">
+          <button onClick={ () => this.remove() } className="btn remove-btn">Remove</button>
+          <button onClick={ () => this.focus() } className="btn focus-btn">Focus</button>
+        </div>
       </div>
     );
   }

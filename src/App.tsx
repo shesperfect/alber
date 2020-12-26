@@ -23,7 +23,7 @@ export class App extends React.Component<any, AppState> {
     const container = this.containerRef.current;
 
     this.buttonRef.current?.addEventListener('click', () => {
-      const primitive = this.factory.resolve(random(0, container?.clientWidth), random(0, container?.clientHeight));
+      const primitive = this.factory.resolve(random(0, 80), random(0, container?.clientHeight));
 
       this.setState((state: AppState) => ({
         instances: [...state.instances, primitive]
@@ -34,12 +34,12 @@ export class App extends React.Component<any, AppState> {
   render() {
     return (
       <div ref={ this.containerRef } className="container">
-        <button ref={ this.buttonRef }>Add primitive</button>
         { this.state.instances.map((component, index) => (
           <React.Fragment key={ index }>
             { component }
           </React.Fragment>))
         }
+        <button ref={ this.buttonRef } className="add-button">Add primitive</button>
       </div>
     );
   }
