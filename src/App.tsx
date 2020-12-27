@@ -31,7 +31,8 @@ export class App extends React.Component<any, AppState> {
           const index = this.state.instances.findIndex(inst => inst === primitive);
 
           this.setState(state => ({
-            instances: state.instances.filter((item, i) => index !== i),
+            instances: state.instances
+              .filter((item, i) => index !== i),
           }));
         },
       });

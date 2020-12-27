@@ -7,3 +7,7 @@ export function randomInt(min = 0, max = 100) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function randomHEX(): string {
+  return Math.floor(Math.random()*16777215).toString(16);
+}

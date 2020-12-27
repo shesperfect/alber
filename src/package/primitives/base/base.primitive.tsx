@@ -25,26 +25,29 @@ export class BasePrimitive extends React.Component<PrimitiveProps, PrimitiveStat
     this.state = {
       focused: true,
     };
+
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.clickHandler.bind(this), true);
-    document.addEventListener('click', (e: any) => {
-      const action = e.target.dataset.action;
-
-      switch (action) {
-        case 'remove':
-        this.focus();
-        e.stopPropagation();
-        break;
-      }
-    });
-    document.addEventListener('keyup', this.keyboardHandler.bind(this));
+    document.addEventListener('click', this.clickHandler, true);
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.clickHandler, true);
-    document.removeEventListener('keyup', this.keyboardHandler);
+  }
+
+  private clickHandler(e: any) {
+    const action = e.target.dataset.action;
+
+    switch (action) {
+      case 'add': case 'focus':
+        this.blur();
+        break;
+      case 'remove':
+        // some code here...
+        break;
+    }
   }
 
   focus() {
@@ -57,31 +60,6 @@ export class BasePrimitive extends React.Component<PrimitiveProps, PrimitiveStat
 
   remove() {
     this.props.onRemove();
-  }
-
-  private clickHandler(e: any) {
-    const action = e.target.dataset.action;
-
-    switch (action) {
-      case 'add': case 'focus':
-        this.blur();
-        break;
-      case 'remove':
-        // this.focus();
-        // e.stopImmediatePropagation();
-        // break;
-    }
-  }
-
-  private keyboardHandler(e: any) {
-    if(e.key === "Escape") {
-      if (this.state.focused) {
-        e.preventDefault();
-        console.log(this);
-        e.stopImmediatePropagation();
-        this.blur()
-      }
-    }
   }
 
   render() {

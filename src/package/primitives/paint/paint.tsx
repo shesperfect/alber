@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { BasePrimitive, PrimitiveProps } from '../base';
-import { random } from '../../utils';
+import { randomHEX } from '../../utils';
 
 import './Paint.scss';
 
 interface PaintProps extends PrimitiveProps {}
 
 interface PaintState {
-  color: number;
+  color: string;
 }
 
 export class Paint extends React.Component<PaintProps, PaintState> {
@@ -16,13 +16,13 @@ export class Paint extends React.Component<PaintProps, PaintState> {
     super(props);
 
     this.state = {
-      color: random(),
+      color: randomHEX(),
     };
   }
 
   private update() {
-    this.setState(state => ({
-      color: state.color + .01
+    this.setState(() => ({
+      color: randomHEX()
     }));
   }
 
@@ -32,7 +32,7 @@ export class Paint extends React.Component<PaintProps, PaintState> {
     return (
       <BasePrimitive left={ left } top={ top } index={ index } onRemove={ onRemove }>
         <div className="paint-wrapper"
-             style={{ borderBottomColor: `#${Math.floor(this.state.color * 16777215).toString(16)}` }}
+             style={{ borderBottomColor: `#${this.state.color}` }}
              onClick={ () => this.update() } />
       </BasePrimitive>
   );

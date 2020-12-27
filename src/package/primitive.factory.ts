@@ -9,7 +9,7 @@ export class PrimitiveFactory {
   private providers: BaseProvider[] = [
     new ClockProvider(),
     new PaintProvider(),
-    // new WindowProvider(),
+    new WindowProvider(),
   ];
 
   resolve(props: PrimitiveProps): ReactElement {
