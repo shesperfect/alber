@@ -45,7 +45,10 @@ export class BasePrimitive extends React.Component<PrimitiveProps, PrimitiveStat
         { this.props.children }
         <div className="buttons">
           <button onClick={ () => this.remove() } className="btn remove-btn">Remove</button>
-          <button onClick={ () => this.focus() } className="btn focus-btn">Focus</button>
+          <button onClick={ () => this.focus() }
+                  className="btn focus-btn"
+                  disabled={ this.state.focused }>{ this.state.focused ? 'Focused' : 'Focus' }
+          </button>
         </div>
       </div>
     );
