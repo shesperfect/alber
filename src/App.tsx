@@ -23,12 +23,23 @@ export class App extends React.Component<any, AppState> {
     const container = this.containerRef.current;
 
     this.buttonRef.current?.addEventListener('click', () => {
-      const primitive = this.factory.resolve(random(0, 80), random(0, container?.clientHeight));
+      const primitive = this.factory.resolve({
+        left: random(0, 80),
+        top: random(0, container?.clientHeight),
+        index: this.state.instances.length,
+        onRemove: () => {
+          const index = this.state.instances.findIndex(inst => inst === primitive);
+
+          this.setState(state => ({
+            instances: state.instances.filter((item, i) => index !== i),
+          }));
+        },
+      });
 
       this.setState((state: AppState) => ({
         instances: [...state.instances, primitive]
       }));
-    });
+    }, true);
   }
 
   render() {
@@ -39,7 +50,7 @@ export class App extends React.Component<any, AppState> {
             { component }
           </React.Fragment>))
         }
-        <button ref={ this.buttonRef } className="add-button">Add primitive</button>
+        <button ref={ this.buttonRef } className="add-button" data-action="add">Add primitive</button>
       </div>
     );
   }

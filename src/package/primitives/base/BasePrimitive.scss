@@ -40,3 +40,21 @@
     border-color: rgba(242, 17, 39, .8);
   }
 }
+
+.number {
+  display: block;
+  background: white;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border: 2px solid #333;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px white;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}

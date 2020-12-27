@@ -27,10 +27,10 @@ export class Paint extends React.Component<PaintProps, PaintState> {
   }
 
   render() {
-    const { left, top } = this.props;
+    const { left, top, index, onRemove } = this.props;
 
     return (
-      <BasePrimitive left={ left } top={ top }>
+      <BasePrimitive left={ left } top={ top } index={ index } onRemove={ onRemove }>
         <div className="paint-wrapper"
              style={{ borderBottomColor: `#${Math.floor(this.state.color * 16777215).toString(16)}` }}
              onClick={ () => this.update() } />

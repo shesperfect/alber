@@ -62,10 +62,10 @@ export class Window extends React.Component<WindowProps, WindowState> {
   }
 
   render() {
-    const { left, top } = this.props;
+    const { left, top, index, onRemove } = this.props;
 
     return (
-      <BasePrimitive left={ left } top={ top }>
+      <BasePrimitive left={ left } top={ top } index={ index } onRemove={ onRemove }>
         <div className={ `window-wrapper ${!this.state.enabled ? 'disabled' : ''}` } onClick={ () => this.update() }>
           <img src={ this.state.src } alt="" />
 

@@ -34,10 +34,10 @@ export class Clock extends React.Component<ClockProps, ClockState> {
   }
 
   render() {
-    const { left, top } = this.props;
+    const { left, top, index, onRemove } = this.props;
 
     return (
-      <BasePrimitive left={ left } top={ top }>
+      <BasePrimitive left={ left } top={ top } index={ index } onRemove={ onRemove }>
         <div className="clock-wrapper">{ this.state.interval / 1000 } sec</div>
       </BasePrimitive>
   );
