@@ -1,5 +1,9 @@
 .wrapper {
   position: absolute;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .buttons {

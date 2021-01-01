@@ -13,6 +13,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
+    "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
     "module": "esnext",

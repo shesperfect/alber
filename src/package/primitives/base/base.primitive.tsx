@@ -1,87 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './BasePrimitive.scss';
 
-export interface PrimitiveProps {
-  top: number;
-  left: number;
-  index: number,
-  onRemove: () => void,
-}
+export const BasePrimitive = props => {
+  const [focused, setFocus] = useState<boolean>(true);
+  const [hidden, setHidden] = useState<boolean>(false);
+  const { top, left, index, children } = props;
 
-export interface PrimitiveState {
-  focused: boolean;
-}
-
-export class BasePrimitive extends React.Component<PrimitiveProps, PrimitiveState> {
-  static defaultProps = {
-    top: 0,
-    left: 0,
-  };
-
-  constructor(props: PrimitiveProps) {
-    super(props);
-
-    this.state = {
-      focused: true,
-    };
-
-    this.clickHandler = this.clickHandler.bind(this);
-  }
-
-  componentDidMount() {
-    document.addEventListener('click', this.clickHandler, true);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.clickHandler, true);
-  }
-
-  private clickHandler(e: any) {
-    const action = e.target.dataset.action;
-
-    switch (action) {
-      case 'add': case 'focus':
-        this.blur();
-        break;
-      case 'remove':
-        // some code here...
-        break;
+  useEffect(() => {
+    function captureClickHandler(e: any) {
+      switch (e.target.dataset.action) {
+        case 'add': case 'focus':
+          setFocus(false);
+          break;
+      }
     }
-  }
 
-  focus() {
-    this.setState(() => ({ focused: true }));
-  }
+    function bubbleClickHandler(e: any) {
+      switch (e.target.dataset.action) {
+        case 'remove':
+          if (!e.listeners) e.listeners = [];
 
-  blur() {
-    this.setState(() => ({ focused: false }));
-  }
+          e.listeners.push(() => setFocus(true));
 
-  remove() {
-    this.props.onRemove();
-  }
+          if (focused) {
+            e.listeners.reverse()[e.listeners.length - 1]();
+            e.stopImmediatePropagation();
+          }
 
-  render() {
-    const { top, left } = this.props;
+          break;
+      }
+    }
 
-    return (
-      <div
-        className={ `wrapper ${ this.state.focused ? 'focused' : '' }` }
-        style={{ top, left: `${left}%` }}>
-        { this.props.children }
-        <div className="buttons">
-          <button onClick={ () => this.remove() }
-                  className="btn remove-btn"
-                  data-action="remove">Remove</button>
-          <button onClick={ () => this.focus() }
-                  className="btn focus-btn"
-                  data-action="focus"
-                  disabled={ this.state.focused }>{ this.state.focused ? 'Focused' : 'Focus' }
-          </button>
-        </div>
-        <span className="number">{ this.props.index }</span>
+    document.addEventListener('click', captureClickHandler, true);
+    document.addEventListener('click', bubbleClickHandler);
+
+    return () => {
+      document.removeEventListener('click', captureClickHandler, true);
+      document.removeEventListener('click', bubbleClickHandler);
+    }
+  }, [focused, hidden]);
+
+  return (
+    <div
+      className={ `wrapper ${ focused ? 'focused' : '' } ${ hidden ? 'hidden' : '' }` }
+      style={{ top, left }}>
+      { children }
+      <div className="buttons">
+        <button onClick={ () => setHidden(true) }
+                className="btn remove-btn"
+                data-action="remove">Remove</button>
+        <button onClick={ () => setFocus(true) }
+                className="btn focus-btn"
+                data-action="focus"
+                disabled={ focused }>{ focused ? 'Focused' : 'Focus' }
+        </button>
       </div>
-    );
-  }
+      <span className="number">{ index }</span>
+    </div>
+  );
 }
+
+

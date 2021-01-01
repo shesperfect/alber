@@ -1,45 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { BasePrimitive, PrimitiveProps } from '../base';
+import { BasePrimitive } from '../base';
 
 import './Clock.scss';
 
-interface ClockProps extends PrimitiveProps {}
+export const Clock = props => {
+  const [timer, setTimer] = useState<number>(5 * 60);
 
-interface ClockState {
-  interval: number;
-}
+  useEffect(() => {
+    const timerID = window.setTimeout(() => setTimer(timer - 1), 1000);
 
-export class Clock extends React.Component<ClockProps, ClockState> {
-  private intervalId: number;
+    if (timer === 0) window.clearTimeout(timerID);
 
-  constructor(props: ClockProps) {
-    super(props);
+    return () => window.clearTimeout(timerID);
+  });
 
-    this.state = {
-      interval: 5 * 60 * 1000,
-    };
-  }
-
-  componentDidMount() {
-    this.intervalId = window.setInterval(() => {
-      this.setState(state => ({ interval: state.interval - 1000 }));
-
-      if (this.state.interval <= 0) window.clearInterval(this.intervalId);
-    }, 1000);
-  }
-
-  componentWillUnmount() {
-    window.clearInterval(this.intervalId);
-  }
-
-  render() {
-    const { left, top, index, onRemove } = this.props;
-
-    return (
-      <BasePrimitive left={ left } top={ top } index={ index } onRemove={ onRemove }>
-        <div className="clock-wrapper">{ this.state.interval / 1000 } sec</div>
-      </BasePrimitive>
+  return (
+    <BasePrimitive {...props}>
+      <div className="clock-wrapper">{ timer } sec</div>
+    </BasePrimitive>
   );
-  }
 }
+
+

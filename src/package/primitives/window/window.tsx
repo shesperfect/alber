@@ -1,78 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { BasePrimitive, PrimitiveProps } from '../base';
+import { BasePrimitive } from '../base';
 
 import './Window.scss';
 
-interface WindowProps extends PrimitiveProps {}
+export const Window = props => {
+  const [imageSrc, setImageSrc] = useState<string>('');
+  const [disabledPeriod, setDisabledPeriod] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
-interface WindowState {
-  src: string;
-  interval: number;
-  enabled: boolean;
-  loading: boolean;
-}
-
-export class Window extends React.Component<WindowProps, WindowState> {
-  private timerId: number;
-
-  constructor(props: WindowProps) {
-    super(props);
-
-    this.state = {
-      src: '',
-      interval: 5,
-      enabled: true,
-      loading: true,
-    };
-  }
-
-  componentDidMount() {
-    fetch(`https://source.unsplash.com/300x150/?beach`).then((response) => {
-      this.setState(() => ({
-        src: response.url,
-        loading: false,
-      }));
-    });
-  }
-
-  update() {
-    if (this.state.enabled) {
-      this.setState(() => ({ loading: true } ));
+  const update = () => {
+    if (disabledPeriod === 0) {
+      setLoading(true);
 
       fetch(`https://source.unsplash.com/300x150/?beach`).then((response) => {
-        this.setState(() => ({
-          src: response.url,
-          interval: 5,
-          enabled: false,
-          loading: false,
-        }));
+        setImageSrc(response.url);
+        setLoading(false);
+        setDisabledPeriod(5);
+
+        const timerId = window.setInterval(() => {
+          setDisabledPeriod(disabledPeriod - 1);
+
+          if (disabledPeriod === 0) window.clearInterval(timerId);
+        })
       });
-
-      this.timerId = window.setInterval(() => {
-        this.setState(state => ({ interval: state.interval - 1 }));
-
-        if (this.state.interval === 0) {
-          this.setState(() => ({ enabled: true }));
-          window.clearInterval(this.timerId)
-        }
-      }, 1000);
     }
+  };
 
-  }
+  return (
+    <BasePrimitive {...props}>
+      <div className={ `window-wrapper ${disabledPeriod !== 0 ? 'disabled' : ''}` } onClick={ update }>
+        <img src={ imageSrc } alt="" />
 
-  render() {
-    const { left, top, index, onRemove } = this.props;
-
-    return (
-      <BasePrimitive left={ left } top={ top } index={ index } onRemove={ onRemove }>
-        <div className={ `window-wrapper ${!this.state.enabled ? 'disabled' : ''}` } onClick={ () => this.update() }>
-          <img src={ this.state.src } alt="" />
-
-          { this.state.loading && (<div className="loader">Loading...</div>) }
-          { !this.state.enabled && (<span className="interval">{ this.state.interval }</span>) }
-        </div>
-      </BasePrimitive>
-    );
-  }
-}
+        { loading && (<div className="loader">Loading...</div>) }
+        { disabledPeriod !== 0 && (<span className="interval">{ disabledPeriod }</span>) }
+      </div>
+    </BasePrimitive>
+  );
+};
