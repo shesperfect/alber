@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+
+import { useRefState } from '../../utils';
 
 import './BasePrimitive.scss';
 
 export const BasePrimitive = props => {
-  const [focused, setFocus] = useState<boolean>(true);
-  const [hidden, setHidden] = useState<boolean>(false);
+  const [focused, focus, focusedRef] = useRefState<boolean>(true);
+  const [hidden, hide, hiddenRef] = useRefState<boolean>(false);
   const { top, left, index, children } = props;
 
   useEffect(() => {
     function captureClickHandler(e: any) {
       switch (e.target.dataset.action) {
         case 'add': case 'focus':
-          setFocus(false);
+          focus(false);
           break;
       }
     }
@@ -21,10 +23,16 @@ export const BasePrimitive = props => {
         case 'remove':
           if (!e.listeners) e.listeners = [];
 
-          e.listeners.push(() => setFocus(true));
+          e.listeners.push(() => {
+            if (!hiddenRef.current) {
+              focus(true);
+            }
 
-          if (focused) {
-            e.listeners.reverse()[e.listeners.length - 1]();
+            return hiddenRef.current;
+          });
+
+          if (focusedRef.current) {
+            e.listeners.reverse().every(callback => callback());
             e.stopImmediatePropagation();
           }
 
@@ -39,7 +47,7 @@ export const BasePrimitive = props => {
       document.removeEventListener('click', captureClickHandler, true);
       document.removeEventListener('click', bubbleClickHandler);
     }
-  }, [focused, hidden]);
+  }, []);
 
   return (
     <div
@@ -47,10 +55,10 @@ export const BasePrimitive = props => {
       style={{ top, left }}>
       { children }
       <div className="buttons">
-        <button onClick={ () => setHidden(true) }
+        <button onClick={ () => hide(true) }
                 className="btn remove-btn"
                 data-action="remove">Remove</button>
-        <button onClick={ () => setFocus(true) }
+        <button onClick={ () => focus(true) }
                 className="btn focus-btn"
                 data-action="focus"
                 disabled={ focused }>{ focused ? 'Focused' : 'Focus' }
@@ -60,5 +68,7 @@ export const BasePrimitive = props => {
     </div>
   );
 }
+
+
 
 
