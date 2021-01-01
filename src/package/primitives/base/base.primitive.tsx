@@ -40,12 +40,34 @@ export const BasePrimitive = props => {
       }
     }
 
+    function keyboardHandler(e: any) {
+      if (e.key === 'Escape') {
+        if (!e.listeners) e.listeners = [];
+
+        e.listeners.push(() => {
+          if (!hiddenRef.current) {
+            focus(true);
+          }
+
+          return hiddenRef.current;
+        });
+
+        if (focusedRef.current) {
+          hide(true);
+          e.listeners.reverse().every(callback => callback());
+          e.stopImmediatePropagation();
+        }
+      }
+    }
+
     document.addEventListener('click', captureClickHandler, true);
     document.addEventListener('click', bubbleClickHandler);
+    document.addEventListener('keyup', keyboardHandler);
 
     return () => {
       document.removeEventListener('click', captureClickHandler, true);
       document.removeEventListener('click', bubbleClickHandler);
+      document.removeEventListener('keyup', keyboardHandler);
     }
   }, []);
 
