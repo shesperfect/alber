@@ -3,8 +3,8 @@ import { randomInt } from './utils';
 
 export class PrimitiveFactory {
   private providers: BaseProvider[] = [
-    new ClockProvider(),
-    new PaintProvider(),
+    // new ClockProvider(),
+    // new PaintProvider(),
     new WindowProvider(),
   ];
 
