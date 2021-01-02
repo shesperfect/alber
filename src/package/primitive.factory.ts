@@ -9,6 +9,9 @@ export class PrimitiveFactory {
   ];
 
   resolve(props): any {
-    return this.providers[randomInt(0, this.providers.length - 1)].resolve(props);
+    return {
+      type: this.providers[randomInt(0, this.providers.length - 1)].resolve(),
+      props,
+    };
   }
 }

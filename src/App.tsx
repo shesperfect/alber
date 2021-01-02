@@ -1,48 +1,55 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 
-import { random, PrimitiveFactory, useRefState } from './package';
+import { random, PrimitiveFactory, useRefState, BasePrimitiveProps } from './package';
 
 import './App.scss';
+
+interface InstanceDescriptor {
+  type: FunctionComponent<BasePrimitiveProps>;
+  props: BasePrimitiveProps;
+}
 
 const App = () => {
   const factory = new PrimitiveFactory();
 
-  const [list, updateList, listRef] = useRefState<ReactElement[]>([]); // TODO: use reducer
+  const [list, updateList, listRef] = useRefState<InstanceDescriptor[]>([]);
 
-  useEffect(() => {
-    const handler = (e: any) => {
-      switch (e.target.dataset.action) {
-        case 'add':
-          const primitive = factory.resolve({
-            left: random(200, window.innerWidth - 200),
-            top: random(200, window.innerHeight - 200),
-            index: listRef.current.length,
-            onRemove: () => {
-              console.log('remove');
-              updateList(listRef.current.filter(el => el !== primitive));
-            },
-          });
+  const add = () => {
+    const descriptor: InstanceDescriptor = factory.resolve({
+      left: random(200, window.innerWidth - 200),
+      top: random(200, window.innerHeight - 200),
+      index: listRef.current.length,
+      focused: true,
+      onRemove: () => {
+        if (descriptor.props.focused) {
+          const indexToRemove = listRef.current.findIndex(d => d === descriptor);
+          const indexToFocus = indexToRemove - 1 < 0 ? listRef.current.length - 1 : indexToRemove - 1;
+          listRef.current[indexToFocus].props.focused = true;
+        }
 
-          updateList([...listRef.current, primitive]);
-          break;
-        case 'remove':
-          console.log('remove event', e);
-      }
-    };
+        updateList(listRef.current.filter(d => d !== descriptor));
+      },
+      onFocus: () => updateList(listRef.current.map(d => {
+        d.props.focused = (d === descriptor);
+        return d;
+      })),
+    });
 
-    document.addEventListener('click', handler);
+    list.forEach(d => d.props.focused = false);
 
-    return () => document.removeEventListener('click', handler);
-  }, []);
+    updateList([...list, descriptor]);
+  };
 
   return (
     <div className="container">
-      { list.map((component, index) => (
-        <React.Fragment key={ index }>
-          { component }
-        </React.Fragment>))
+      {
+        list.map((descriptor, index) => {
+          const { type: Type, props } = descriptor;
+
+          return (<Type {...props} key={index} />);
+        })
       }
-      <button className="add-button" data-action="add">Add primitive</button>
+      <button className="add-button" onClick={ add }>Add primitive</button>
     </div>
   );
 };

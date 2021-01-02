@@ -10,12 +10,11 @@ export const Paint: FunctionComponent<BasePrimitiveProps> = props => {
 
   return (
     <BasePrimitive {...props}>
-      <div className="paint-wrapper"
-           style={{ borderBottomColor: `#${color}` }}
-           onClick={ () => setColor(randomHEX()) } />
+      <div className="paint-wrapper">
+        <div className="paint-triangle"
+             style={{ backgroundColor: `#${color}` }}
+             onClick={ () => setColor(randomHEX()) } />
+      </div>
     </BasePrimitive>
   );
-
 }
-
-
