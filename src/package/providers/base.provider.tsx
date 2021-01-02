@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
+import { BasePrimitiveProps } from '../primitives/base';
 
 export abstract class BaseProvider {
-  protected instances = new Set();
+  protected instances = new Set<ReactElement>();
 
-  protected abstract primitiveType: any;
+  protected abstract primitiveType: FunctionComponent<BasePrimitiveProps>;
 
   resolve(props): any {
     const Type = this.primitiveType;

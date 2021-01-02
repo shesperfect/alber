@@ -1,13 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
 import { useRefState } from '../../utils';
 
 import './BasePrimitive.scss';
 
-export const BasePrimitive = props => {
+export interface BasePrimitiveProps {
+  top: number;
+  left: number;
+  index: number;
+  onRemove: () => void;
+}
+
+export const BasePrimitive: FunctionComponent<BasePrimitiveProps> = ({ top, left, index, children }) => {
   const [focused, focus, focusedRef] = useRefState<boolean>(true);
   const [hidden, hide, hiddenRef] = useRefState<boolean>(false);
-  const { top, left, index, children } = props;
 
   useEffect(() => {
     function captureClickHandler(e: any) {
@@ -33,7 +39,6 @@ export const BasePrimitive = props => {
 
           if (focusedRef.current) {
             e.listeners.reverse().every(callback => callback());
-            e.stopImmediatePropagation();
           }
 
           break;

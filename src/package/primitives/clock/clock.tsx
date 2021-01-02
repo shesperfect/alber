@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { BasePrimitive } from '../base';
+import { BasePrimitive, BasePrimitiveProps } from '../base';
 
 import './Clock.scss';
 
-export const Clock = props => {
+export const Clock: FunctionComponent<BasePrimitiveProps> = props => {
   const [timer, setTimer] = useState<number>(5 * 60);
 
   useEffect(() => {

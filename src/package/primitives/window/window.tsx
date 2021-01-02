@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { BasePrimitive } from '../base';
+import { BasePrimitive, BasePrimitiveProps } from '../base';
 
 import './Window.scss';
 
 const DISABLED_TIME_IN_SEC = 5;
 
-export const Window = props => {
+export const Window: FunctionComponent<BasePrimitiveProps> = props => {
   const [imageSrc, setImageSrc] = useState<string>('');
   const [disabledPeriod, setDisabledPeriod] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
