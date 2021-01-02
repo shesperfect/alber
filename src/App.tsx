@@ -1,21 +1,21 @@
 import React, { FunctionComponent } from 'react';
 
-import { random, PrimitiveFactory, useRefState, BasePrimitiveProps } from './package';
+import {
+  random,
+  PrimitiveFactory,
+  PrimitiveDescriptor,
+  useRefState,
+} from './package';
 
 import './App.scss';
 
-interface InstanceDescriptor {
-  type: FunctionComponent<BasePrimitiveProps>;
-  props: BasePrimitiveProps;
-}
-
-const App = () => {
+const App: FunctionComponent = () => {
   const factory = new PrimitiveFactory();
 
-  const [list, updateList, listRef] = useRefState<InstanceDescriptor[]>([]);
+  const [list, updateList, listRef] = useRefState<PrimitiveDescriptor[]>([]);
 
   const add = () => {
-    const descriptor: InstanceDescriptor = factory.resolve({
+    const descriptor: PrimitiveDescriptor = factory.resolve({
       left: random(200, window.innerWidth - 200),
       top: random(200, window.innerHeight - 200),
       index: listRef.current.length,

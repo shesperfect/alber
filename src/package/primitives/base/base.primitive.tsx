@@ -11,6 +11,11 @@ export interface BasePrimitiveProps {
   onFocus: () => void;
 }
 
+export interface PrimitiveDescriptor {
+  type: FunctionComponent<BasePrimitiveProps>;
+  props: BasePrimitiveProps;
+}
+
 export const BasePrimitive: FunctionComponent<BasePrimitiveProps> =
   ({ top, left, index, focused, children, onRemove, onFocus }) => {
 

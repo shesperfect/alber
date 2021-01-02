@@ -1,4 +1,5 @@
 import { BaseProvider, ClockProvider, PaintProvider, WindowProvider } from './providers';
+import { PrimitiveDescriptor } from './primitives/base';
 import { randomInt } from './utils';
 
 export class PrimitiveFactory {
@@ -8,10 +9,7 @@ export class PrimitiveFactory {
     new WindowProvider(),
   ];
 
-  resolve(props): any {
-    return {
-      type: this.providers[randomInt(0, this.providers.length - 1)].resolve(),
-      props,
-    };
+  resolve(props): PrimitiveDescriptor {
+    return this.providers[randomInt(0, this.providers.length - 1)].resolve(props);
   }
 }
