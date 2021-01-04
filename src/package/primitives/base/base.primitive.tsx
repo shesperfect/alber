@@ -1,4 +1,6 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { createRef, FunctionComponent, useEffect } from 'react';
+
+import { useDragNDrop } from '../../utils';
 
 import './BasePrimitive.scss';
 
@@ -19,6 +21,9 @@ export interface PrimitiveDescriptor {
 export const BasePrimitive: FunctionComponent<BasePrimitiveProps> =
   ({ top, left, index, focused, children, onRemove, onFocus }) => {
 
+  const wrapperRef = createRef<HTMLDivElement>();
+  const position = useDragNDrop(wrapperRef, left, top);
+
   useEffect(() => {
     function keyboardHandler(e: KeyboardEvent) {
       if (e.key === 'Escape') {
@@ -34,7 +39,8 @@ export const BasePrimitive: FunctionComponent<BasePrimitiveProps> =
   return (
     <div
       className={ `wrapper ${ focused ? 'focused' : '' }` }
-      style={{ top, left }}>
+      style={{ left: position.x, top: position.y }}
+      ref={ wrapperRef }>
       { children }
       <div className="buttons">
         <button onClick={ onRemove }
