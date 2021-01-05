@@ -21,8 +21,8 @@ export interface PrimitiveDescriptor {
 export const BasePrimitive: FunctionComponent<BasePrimitiveProps> =
   ({ top, left, index, focused, children, onRemove, onFocus }) => {
 
-  const wrapperRef = createRef<HTMLDivElement>();
-  const position = useDragNDrop(wrapperRef, left, top);
+  const moveButtonRef = createRef<HTMLButtonElement>();
+  const position = useDragNDrop(moveButtonRef, left, top);
 
   useEffect(() => {
     function keyboardHandler(e: KeyboardEvent) {
@@ -39,23 +39,25 @@ export const BasePrimitive: FunctionComponent<BasePrimitiveProps> =
   return (
     <div
       className={ `wrapper ${ focused ? 'focused' : '' }` }
-      style={{ left: position.x, top: position.y }}
-      ref={ wrapperRef }>
+      style={{ left: position.x, top: position.y }}>
       { children }
       <div className="buttons">
         <button onClick={ onRemove }
-                className="btn remove-btn"
-                data-action="remove">Remove</button>
+                className="btn remove-btn">Remove
+        </button>
         <button onClick={ onFocus }
                 className="btn focus-btn"
-                data-action="focus"
                 disabled={ focused }>{ focused ? 'Focused' : 'Focus' }
+        </button>
+        <button className="btn move-btn"
+                ref={moveButtonRef}>Move
         </button>
       </div>
       <span className="number">{ index }</span>
     </div>
   );
 }
+
 
 
 

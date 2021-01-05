@@ -4,10 +4,6 @@
   &.hidden {
     display: none;
   }
-
-  &:hover {
-    cursor: move;
-  }
 }
 
 .buttons {
@@ -29,6 +25,15 @@
     cursor: pointer;
     outline: none;
     color: #333;
+
+    &.move-btn {
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+        border-style: dashed;
+      }
+    }
 
     &:hover {
       border-color: rgba(51, 51, 51, .8);
