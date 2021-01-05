@@ -53,7 +53,6 @@ export function useDragNDrop(elementRef: RefObject<HTMLElement>, left = 0, top =
     };
 
     const onMouseUp = e => {
-      e.preventDefault();
       isMoving && e.stopImmediatePropagation();
 
       isMoving = false;

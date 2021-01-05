@@ -23,7 +23,9 @@ const App: FunctionComponent = () => {
       onRemove: () => {
         if (descriptor.props.focused) {
           const indexToRemove = listRef.current.findIndex(d => d === descriptor);
-          const indexToFocus = indexToRemove - 1 < 0 ? listRef.current.length - 1 : indexToRemove - 1;
+          const indexToFocus = indexToRemove - 1 < 0
+            ? listRef.current.length - 1
+            : indexToRemove - 1;
           listRef.current[indexToFocus].props.focused = true;
         }
 

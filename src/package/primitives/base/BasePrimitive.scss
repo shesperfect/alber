@@ -4,6 +4,10 @@
   &.hidden {
     display: none;
   }
+
+  &:hover {
+    cursor: move;
+  }
 }
 
 .buttons {
