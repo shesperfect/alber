@@ -17,10 +17,12 @@ export const Window: FunctionComponent<BasePrimitiveProps> = props => {
 
   useEffect(() => update(), []);
   useEffect(() => {
+    let timerId;
+
     if (imageSrc) {
       let time = DISABLED_TIME_IN_SEC;
 
-      const timerId = window.setInterval(() => {
+      timerId = window.setInterval(() => {
         setDisabledPeriod(--time);
 
         // @ts-ignore
@@ -28,6 +30,7 @@ export const Window: FunctionComponent<BasePrimitiveProps> = props => {
       }, 1000)
     }
 
+    return () => window.clearInterval(timerId);
   }, [imageSrc]);
 
   const update = () => {

@@ -1,10 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 import {
-  random,
-  PrimitiveFactory,
-  PrimitiveDescriptor,
-  useRefState,
+  random, PrimitiveFactory, PrimitiveDescriptor, useRefState,
 } from './package';
 
 import './App.scss';
@@ -20,6 +17,7 @@ const App: FunctionComponent = () => {
       top: random(200, window.innerHeight - 200),
       index: listRef.current.length,
       focused: true,
+      key: Symbol(listRef.current.length).toString(),
       onRemove: () => {
         if (descriptor.props.focused) {
           const indexToRemove = listRef.current.findIndex(d => d === descriptor);
@@ -29,7 +27,9 @@ const App: FunctionComponent = () => {
           listRef.current[indexToFocus].props.focused = true;
         }
 
-        updateList(listRef.current.filter(d => d !== descriptor));
+        const newList = listRef.current.filter(d => d !== descriptor);
+
+        updateList(newList);
       },
       onFocus: () => updateList(listRef.current.map(d => {
         d.props.focused = (d === descriptor);
@@ -45,10 +45,10 @@ const App: FunctionComponent = () => {
   return (
     <div className="container">
       {
-        list.map((descriptor, index) => {
+        list.map(descriptor => {
           const { type: Type, props } = descriptor;
 
-          return (<Type {...props} key={index} />);
+          return (<Type {...props} />);
         })
       }
       <button className="add-button" onClick={ add }>Add primitive</button>

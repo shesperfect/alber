@@ -60,14 +60,12 @@ export function useDragNDrop(elementRef: RefObject<HTMLElement>, left = 0, top =
 
     elementRef.current?.addEventListener('mousedown', onMouseDown);
     document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseout', onMouseUp);
-    elementRef.current?.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mouseup', onMouseUp);
 
     return () => {
       elementRef.current?.removeEventListener('mousedown', onMouseDown);
       document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseout', onMouseUp);
-      elementRef.current?.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mouseup', onMouseUp);
     };
   }, []);
 
