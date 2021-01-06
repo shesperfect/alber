@@ -1,21 +1,24 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
 import { BasePrimitive, BasePrimitiveProps } from '../base';
+import { useRefState } from '../../custom.effects';
 
 import './Clock.scss';
 
 const CLOCK_LIFE_TIME_IN_SEC = 5 * 60;
 
 export const Clock: FunctionComponent<BasePrimitiveProps> = props => {
-  const [timer, setTimer] = useState<number>(CLOCK_LIFE_TIME_IN_SEC);
+  const [timer, setTimer, timerRef] = useRefState<number>(CLOCK_LIFE_TIME_IN_SEC);
 
   useEffect(() => {
-    const timerID = window.setInterval(() => setTimer(timer - 1), 1000);
+    const timerID = window.setInterval(() => {
+      setTimer(timerRef.current - 1);
 
-    if (timer === 0) window.clearInterval(timerID);
+      if (timerRef.current === 0) window.clearInterval(timerID);
+    }, 1000);
 
     return () => window.clearInterval(timerID);
-  }, [timer]);
+  }, []);
 
   return (
     <BasePrimitive {...props}>

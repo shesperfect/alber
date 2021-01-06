@@ -1,6 +1,6 @@
 import React, { createRef, FunctionComponent, useEffect } from 'react';
 
-import { useDragNDrop } from '../../utils';
+import { useDragNDrop } from '../../custom.effects';
 
 import './BasePrimitive.scss';
 
@@ -38,7 +38,7 @@ export const BasePrimitive: FunctionComponent<BasePrimitiveProps> =
 
   return (
     <div
-      className={ `wrapper ${ focused ? 'focused' : '' }` }
+      className='wrapper'
       style={{ left: position.x, top: position.y }}>
       { children }
       <div className="buttons">
@@ -46,7 +46,7 @@ export const BasePrimitive: FunctionComponent<BasePrimitiveProps> =
                 className="btn remove-btn">Remove
         </button>
         <button onClick={ onFocus }
-                className="btn focus-btn"
+                className={`btn focus-btn ${ focused ? 'active' : '' }`}
                 disabled={ focused }>{ focused ? 'Focused' : 'Focus' }
         </button>
         <button className="btn move-btn"

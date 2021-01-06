@@ -11,7 +11,7 @@ export abstract class BaseProvider {
   protected abstract primitiveType: FunctionComponent<BasePrimitiveProps>;
 
   resolve(props: BasePrimitiveProps): PrimitiveDescriptor {
-    const descriptor = {
+    const descriptor: PrimitiveDescriptor = {
       type: this.primitiveType,
       props,
     };

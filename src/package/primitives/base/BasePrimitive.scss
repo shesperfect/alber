@@ -35,18 +35,20 @@
       }
     }
 
+    &.focus-btn {
+      &.active {
+        color: rgba(242, 17, 39, 1);
+        border-color: rgba(242, 17, 39, 1);
+
+        &:hover {
+          border-color: rgba(242, 17, 39, .8);
+        }
+      }
+    }
+
     &:hover {
       border-color: rgba(51, 51, 51, .8);
     }
-  }
-}
-
-.focused .focus-btn {
-  color: rgba(242, 17, 39, 1);
-  border-color: rgba(242, 17, 39, 1);
-
-  &:hover {
-    border-color: rgba(242, 17, 39, .8);
   }
 }
 

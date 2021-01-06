@@ -15,6 +15,18 @@ export const Window: FunctionComponent<BasePrimitiveProps> = props => {
     return fetch(`https://source.unsplash.com/300x150/?beach`);
   }
 
+  function update() {
+    if (disabledPeriod === 0) {
+      setLoading(true);
+
+      query().then((response) => {
+        setImageSrc(response.url);
+        setLoading(false);
+        setDisabledPeriod(DISABLED_TIME_IN_SEC);
+      });
+    }
+  }
+
   useEffect(() => update(), []);
   useEffect(() => {
     let timerId;
@@ -33,17 +45,7 @@ export const Window: FunctionComponent<BasePrimitiveProps> = props => {
     return () => window.clearInterval(timerId);
   }, [imageSrc]);
 
-  const update = () => {
-    if (disabledPeriod === 0) {
-      setLoading(true);
 
-      query().then((response) => {
-        setImageSrc(response.url);
-        setLoading(false);
-        setDisabledPeriod(DISABLED_TIME_IN_SEC);
-      });
-    }
-  };
 
   return (
     <BasePrimitive {...props}>
